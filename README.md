@@ -103,9 +103,9 @@ Trigger a daily log rollover (just after midnight)
 
 # Output files
 Output files:
- - `log_dir/check_network.log`
- - `log_dir/check_network_yyyy-mm-dd.log`
- - `log_dir/check_network_yyyy-mm-ddTHH:MM:SS.log`
+ - `log_dir/check_network.log`  Active log file
+ - `log_dir/check_network_yyyy-mm-ddTHH:MM:SS.log`  Sub-daily log file (merged into daily files)
+ - `log_dir/check_network_yyyy-mm-dd.log`  Daily log file
 
 If verbose is true:
  - `metalog_dir/check_network.err`
