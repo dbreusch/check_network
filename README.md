@@ -19,6 +19,19 @@ Results are written to a log file (name and location set in configuration file).
 - -c filename | --config=filename  configuration file (defaults to check_network.yml)
 - -v | --verbose  write metalog messages (messages about the app)
 
+#### Example log output
+Configured to check every minute and rotate through five URLs:
+```
+Wed 08 10:50:40 httpcat Ok
+Wed 08 10:51:41 worldtimeapi 10:51:51.112314
+  *** Connection Error
+HTTPConnectionPool(host='worldclockapi.com', port=80): Max retries exceeded with url: /api/json/utc/now (Caused by ConnectTimeoutError(<urllib3.connection.HTTPConnection object at 0x1088f5af0>, 'Connection to worldclockapi.com timed out. (connect timeout=30)'))
+Wed 08 10:52:51 worldclockapi Network error
+Wed 08 10:54:21 swapi Ok
+Wed 08 10:55:22 geonames Ok
+Wed 08 10:56:24 httpcat Ok
+```
+
 #### pidfile
 After startup, `check_network.py` will write its PID to a file (hardcoded as `check_network.pid`) to make it easier to send signals to the running process.  The location of this file is set in the configuration file with option `scratch_dir` (defaults to "/var/tmp").
 
@@ -72,7 +85,7 @@ metalog_dir and metalog_fn specify where, when running in verbose mode, messages
 sleep_time is the number of seconds between network checks.
 rotate: whether the URLs are rotated through between checks (assuming more than one is defined).  Note that the URL will always be rotated after an error.
 
-Warning: as of this version of the code (1.0.0), `log_dir` and `metalog_dir` must already exist or the respective file open will fail.  This is something I intend to improve in the future.
+Warning: as of this version of the code (0.1.0), `log_dir` and `metalog_dir` must already exist or the respective file open will fail.  This is something I intend to improve in the future.
 
 ## Utility scripts to run and manage the log
 - `run_check_network`
@@ -88,18 +101,15 @@ Start the network monitoring script (RunAtLoad=True)
 - `local.check_network.switch-log-file.plist`
 Trigger a daily log rollover (just after midnight)
 
-# The virtual environment
-`check_network.py` runs in a virtual environment managed by `poetry`.  It assumes that `poetry` is installed and available and will exit if it is not.
-
 # Output files
 Output files:
-  `log_dir/check_network.log`
-  `log_dir/check_network_yyyy-mm-dd.log`
-  `log_dir/check_network_yyyy-mm-ddTHH:MM:SS.log`
+ - `log_dir/check_network.log`
+ - `log_dir/check_network_yyyy-mm-dd.log`
+ - `log_dir/check_network_yyyy-mm-ddTHH:MM:SS.log`
 
 If verbose is true:
-  `metalog_dir/check_network.err`
-  `metalog_dir/check_network.out`
+ - `metalog_dir/check_network.err`
+ - `metalog_dir/check_network.out`
 
 # Installation
 ## The virtual environment
@@ -111,6 +121,7 @@ To install Python dependencies under `poetry` (so you can run this script), in t
 Utility scripts to edit for local directories and command line arguments:
 - `run_check_network`
 - `check_network_switch.py`
+
 Move (or copy) these to a `bin` folder on your path for convenience.
 
 Configuration file `check_network.yml`: edit for your runtime options.
@@ -118,6 +129,7 @@ Configuration file `check_network.yml`: edit for your runtime options.
 If this is a macOS setup, edit these plists for local directories and command line arguments:
 - `local.check_network.start.plist`
 - `local.check_network.switch-log-file.plist`
+
 Move (or copy) these to ~/Library/LaunchAgents.
 
 # Startup and shutdown
