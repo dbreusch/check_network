@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "project"
+version = "0.1.0"
+description = ""
+authors = ["David Reusch <dbreusch@me.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+datetime = "^4.3"
+requests = "^2.26.0"
+python-dateutil = "^2.8.2"
+PyYAML = "^5.4.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^4.6"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

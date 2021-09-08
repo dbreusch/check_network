@@ -1,0 +1,42 @@
+log_dir: /var/tmp/nlogs
+#log_dir: /var/tmp/nlogs_test
+
+log_fn: check_network
+#log_fn: test_check_network
+
+metalog_fn: check_network
+
+metalog_dir: /var/tmp/nlogs
+#metalog_dir: /var/tmp
+
+#sleep_time: 10
+sleep_time: 60
+
+#scratch_dir: /var/tmp
+
+rotate: 1
+
+api_list:
+  - name: worldtimeapi
+    type: time
+    url: http://worldtimeapi.org/api/timezone/America/Los_angeles
+    key: utc_datetime
+    timestr: "%Y-%m-%dT%H:%M:%S.%f+00:00"
+
+  - name: worldclockapi
+    type: time
+    url: http://worldclockapi.com/api/json/utc/now
+    key: currentDateTime
+    timestr: "%Y-%m-%dT%H:%MZ"
+
+  - name: swapi
+    type: other
+    url: https://swapi.dev/api/
+
+  - name: geonames
+    type: other
+    url: "http://api.geonames.org/weatherJSON?formatted=true&north=48&south=47&east=-122&west=-123&username=gandalf&style=full"
+
+  - name: httpcat
+    type: other
+    url: https://http.cat/200

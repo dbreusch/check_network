@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# wrapper script for the check_network utility
+# takes two optional arguments
+#  -v     sets verbose output to metalog (off)
+#  -c fn  specifies an alternate configuration file name (check_network.yml)
+
+# location of the check_network Python script
+script_dir=~/python_utils/check_network/check_network
+
+# default options
+verbosity=""
+config_file=check_network.yml
+
+# check command line arguments
+while getopts vc: flag
+do
+  case "${flag}" in
+    v) verbosity="-v";;
+    c) config_file=${OPTARG};;
+  esac
+done
+
+# check that poetry is available
+# first test for the command in PATH
+if ! type -P "poetry" &>/dev/null; then
+  # not in PATH, now check that the executable is where it
+  # is supposed to be (i.e., poetry is installed)
+  if [ -x $HOME/.poetry/bin/poetry ]; then
+    # found it, now add it to PATH
+    PATH="$HOME/.poetry/bin:$PATH"
+  else
+    # couldn't find it, exit
+    echo "Command poetry not found in PATH, must be installed to use this script."
+  fi
+fi
+
+# run the script
+cd $script_dir
+poetry run python3 -u check_network.py $verbosity -c $config_file
+
